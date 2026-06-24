@@ -9,8 +9,8 @@ metadata:
     backstage.io/kubernetes-label-selector: 'app=hello-demo'
     backstage.io/kubernetes-namespace: demo-workload
 
-    # RHACS plugin annotation (if you have deployments in RHACS)
-    # acs/deployment-name: hello-demo
+    # RHACS plugin annotation
+    acs/deployment-name: hello-demo
 
   tags:
     - demo

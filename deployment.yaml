@@ -23,10 +23,74 @@ spec:
     spec:
       containers:
       - name: hello
-        image: nginxdemos/hello:latest
+        image: <your-quay-registry-url>/<organization>/<repository>:nginx-1.26.3-alpine3.20-amd64
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           name: http
+        command:
+          - sh
+          - -c
+          - |
+            mkdir -p /tmp/nginx/cache /tmp/nginx/run
+            cat > /tmp/nginx.conf <<'EOF'
+            worker_processes auto;
+            pid /tmp/nginx/run/nginx.pid;
+            error_log /dev/stderr info;
+
+            events {
+                worker_connections 1024;
+            }
+
+            http {
+                include /etc/nginx/mime.types;
+                default_type application/octet-stream;
+                access_log /dev/stdout;
+                sendfile on;
+                keepalive_timeout 65;
+                client_body_temp_path /tmp/nginx/cache/client_temp;
+                proxy_temp_path /tmp/nginx/cache/proxy_temp;
+                fastcgi_temp_path /tmp/nginx/cache/fastcgi_temp;
+                uwsgi_temp_path /tmp/nginx/cache/uwsgi_temp;
+                scgi_temp_path /tmp/nginx/cache/scgi_temp;
+
+                server {
+                    listen 8080;
+                    server_name _;
+
+                    location / {
+                        root /usr/share/nginx/html;
+                        index index.html;
+                    }
+                }
+            }
+            EOF
+
+            cat > /usr/share/nginx/html/index.html <<'EOF'
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Hello Demo</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 40px; }
+                    .info { background: #f0f0f0; padding: 20px; border-radius: 5px; }
+                </style>
+            </head>
+            <body>
+                <h1>Hello from Demo Application!</h1>
+                <div class="info">
+                    <p><strong>Hostname:</strong> $HOSTNAME</p>
+                    <p><strong>Image:</strong> nginx:1.26.3-alpine3.20 (from Quay)</p>
+                </div>
+            </body>
+            </html>
+            EOF
+
+            exec nginx -c /tmp/nginx.conf -g 'daemon off;'
+        volumeMounts:
+        - name: cache
+          mountPath: /tmp/nginx/cache
+        - name: run
+          mountPath: /tmp/nginx/run
         resources:
           requests:
             memory: "64Mi"
@@ -37,12 +101,17 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8080
           initialDelaySeconds: 5
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8080
           initialDelaySeconds: 3
           periodSeconds: 5
+      volumes:
+      - name: cache
+        emptyDir: {}
+      - name: run
+        emptyDir: {}
