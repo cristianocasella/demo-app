@@ -16,6 +16,9 @@ metadata:
     # Quay plugin annotation
     quay.io/repository-slug: demoorg/demo
 
+    # TechDocs annotation
+    backstage.io/techdocs-ref: dir:.
+
   tags:
     - demo
     - web
