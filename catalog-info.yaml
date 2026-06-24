@@ -13,9 +13,8 @@ metadata:
     acs/deployment-name: hello-demo
     acs/cluster-name: my-cluster
 
-    # Quay plugin annotations
+    # Quay plugin annotation
     quay.io/repository-slug: demoorg/demo
-    quay.io/instance: custom
 
   tags:
     - demo
