@@ -15,6 +15,7 @@ metadata:
 
     # Quay plugin annotations
     quay.io/repository-slug: demoorg/demo
+    quay.io/instance: custom
 
   tags:
     - demo
