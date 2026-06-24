@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: hello-demo
+  namespace: demo-workload
+  labels:
+    app: hello-demo
+    app.kubernetes.io/name: hello-demo
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: demo-app
+spec:
+  to:
+    kind: Service
+    name: hello-demo
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

@@ -1,0 +1,32 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hello-demo
+  title: Hello Demo Application
+  description: A simple demo web application showing pod information
+  annotations:
+    # Kubernetes plugin annotations
+    backstage.io/kubernetes-label-selector: 'app=hello-demo'
+    backstage.io/kubernetes-namespace: demo-workload
+
+    # RHACS plugin annotation (if you have deployments in RHACS)
+    # acs/deployment-name: hello-demo
+
+  tags:
+    - demo
+    - web
+    - nginx
+spec:
+  type: service
+  lifecycle: experimental
+  owner: user:default/admin
+  system: demo-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: demo-system
+  title: Demo System
+  description: Demo system for testing RHDH integrations
+spec:
+  owner: user:default/admin

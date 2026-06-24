@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-demo
+  namespace: demo-workload
+  labels:
+    app: hello-demo
+    app.kubernetes.io/name: hello-demo
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: demo-app
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: hello-demo
