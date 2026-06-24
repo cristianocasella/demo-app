@@ -9,8 +9,12 @@ metadata:
     backstage.io/kubernetes-label-selector: 'app=hello-demo'
     backstage.io/kubernetes-namespace: demo-workload
 
-    # RHACS plugin annotation
+    # RHACS plugin annotations
     acs/deployment-name: hello-demo
+    acs/cluster-name: my-cluster
+
+    # Quay plugin annotations
+    quay.io/repository-slug: demoorg/demo
 
   tags:
     - demo
