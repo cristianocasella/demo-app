@@ -34,6 +34,13 @@ spec:
   lifecycle: experimental
   owner: user:default/admin
   system: demo-system
+  dependsOn:
+    - resource:default/quay-registry
+    - resource:default/openshift-cluster
+    - resource:default/github-repo
+  providesApis: []
+  consumesApis: []
+  subcomponentOf: component:default/rhdh
 ---
 apiVersion: backstage.io/v1alpha1
 kind: System
@@ -43,3 +50,95 @@ metadata:
   description: Demo system for testing RHDH integrations
 spec:
   owner: user:default/admin
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: rhdh
+  title: Red Hat Developer Hub
+  description: Internal developer portal providing unified access to tools, documentation, and platform services
+  tags:
+    - platform
+    - developer-portal
+    - backstage
+spec:
+  type: platform
+  lifecycle: production
+  owner: user:default/admin
+  system: demo-system
+  dependsOn:
+    - resource:default/rhacs
+    - resource:default/quay-registry
+    - resource:default/openshift-cluster
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: openshift-cluster
+  title: OpenShift Cluster
+  description: Kubernetes-based container orchestration platform running application workloads
+  annotations:
+    backstage.io/kubernetes-namespace: demo-workload
+  tags:
+    - kubernetes
+    - openshift
+    - platform
+spec:
+  type: kubernetes-cluster
+  owner: user:default/admin
+  system: demo-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: quay-registry
+  title: Quay Container Registry
+  description: Container image registry for storing and distributing application images
+  annotations:
+    quay.io/repository-slug: demoorg/demo
+  tags:
+    - registry
+    - container
+    - quay
+spec:
+  type: container-registry
+  owner: user:default/admin
+  system: demo-system
+  dependsOn:
+    - resource:default/openshift-cluster
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: rhacs
+  title: Red Hat Advanced Cluster Security
+  description: Kubernetes-native security platform providing vulnerability management and policy enforcement
+  annotations:
+    acs/cluster-name: my-cluster
+  tags:
+    - security
+    - scanning
+    - rhacs
+spec:
+  type: security-scanner
+  owner: user:default/admin
+  system: demo-system
+  dependsOn:
+    - resource:default/openshift-cluster
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: github-repo
+  title: GitHub Repository
+  description: Source code repository and CI/CD platform
+  annotations:
+    github.com/project-slug: cristianocasella/demo-app
+  tags:
+    - scm
+    - github
+    - cicd
+spec:
+  type: repository
+  owner: user:default/admin
+  system: demo-system
