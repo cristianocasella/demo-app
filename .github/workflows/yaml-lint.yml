@@ -1,0 +1,64 @@
+name: YAML Syntax Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  yaml-lint:
+    name: Validate YAML Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Create yamllint config
+        run: |
+          cat > .yamllint.yml << 'EOF'
+          extends: default
+          rules:
+            line-length:
+              max: 120
+              level: warning
+            indentation:
+              spaces: 2
+              indent-sequences: true
+            comments:
+              min-spaces-from-content: 1
+            document-start: disable
+            truthy:
+              allowed-values: ['true', 'false', 'yes', 'no']
+          ignore: |
+            .github/
+            node_modules/
+          EOF
+
+      - name: Run yamllint
+        run: |
+          echo "Checking YAML files for syntax errors..."
+          yamllint -f colored .
+
+      - name: Check specific YAML files
+        run: |
+          echo "Validating key files:"
+          for file in catalog-info.yaml deployment.yaml service.yaml route.yaml namespace.yaml mkdocs.yml; do
+            if [ -f "$file" ]; then
+              echo "✓ Checking $file"
+              yamllint "$file"
+            fi
+          done
+
+      - name: Summary
+        if: success()
+        run: echo "✅ All YAML files have valid syntax!"
