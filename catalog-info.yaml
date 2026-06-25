@@ -21,6 +21,10 @@ metadata:
 
     # GitHub annotations for Scorecard
     github.com/project-slug: cristianocasella/demo-app
+    backstage.io/source-location: url:https://github.com/cristianocasella/demo-app
+
+    # OpenSSF Scorecard annotation
+    openssf/scorecard-location: https://api.securityscorecards.dev/projects/github.com/cristianocasella/demo-app
 
   tags:
     - demo
