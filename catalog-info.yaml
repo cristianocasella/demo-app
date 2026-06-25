@@ -17,7 +17,10 @@ metadata:
     quay.io/repository-slug: demoorg/demo
 
     # TechDocs annotation
-    backstage.io/techdocs-ref: dir:docs
+    backstage.io/techdocs-ref: dir:.
+
+    # GitHub annotations for Scorecard
+    github.com/project-slug: cristianocasella/demo-app
 
   tags:
     - demo
