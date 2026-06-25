@@ -28,6 +28,19 @@ Perfect for testing:
 - Load balancing across pods
 - RHACS integration (security scanning)
 
+## Catalog Integration
+
+This component is registered in Red Hat Developer Hub through the `catalog-info.yaml` file. The following integrations are enabled via annotations:
+
+- **Kubernetes**: Monitors pods, deployments, and services in the cluster
+- **RHACS**: Scans container images for vulnerabilities and policy compliance
+- **Quay**: Displays container registry information and security scan results
+- **TechDocs**: Generates documentation from the `docs/` folder
+- **GitHub**: Tracks repository metrics and activity
+- **OpenSSF Scorecard**: Evaluates repository security practices
+
+These integrations provide a unified developer portal experience, bringing together information from multiple tools and platforms.
+
 ## Deploy
 
 ```bash
@@ -56,12 +69,39 @@ oc get route -n demo-workload
 
 ## View in RHDH
 
-Once registered in the catalog, you'll see:
+Once registered in the catalog, you'll see multiple tabs providing comprehensive insights:
 
-- **Overview Tab**: Component information
-- **Kubernetes Tab**: Pods, Deployments, Services, Routes, HPA
-- **Topology Tab**: Visual application topology
-- **Security Tab**: RHACS vulnerabilities and policy violations
+### Overview Tab
+Component metadata, ownership, lifecycle status, and system relationships.
+
+### Documentation (TechDocs)
+Auto-generated documentation from this repository's `docs/` folder, built with MkDocs.
+
+### Kubernetes Tab
+Real-time Kubernetes resources:
+- **Pods**: Running instances with logs and terminal access
+- **Deployments**: Replica sets and rollout status
+- **Services**: Network endpoints and port mappings
+- **Routes**: OpenShift routes with external URLs
+- **Topology**: Visual graph of application components and relationships
+
+### Security Tab
+Security analysis powered by Red Hat Advanced Cluster Security (RHACS):
+- **CVE Scanning**: Container image vulnerabilities with severity ratings
+- **Policy Violations**: Security policy compliance status
+- **Risk Score**: Overall security posture assessment
+
+### Scorecard Tab
+Health and quality metrics:
+- **GitHub Metrics**: Open pull requests, repository activity
+- **OpenSSF Scorecard**: Security best practices score from [OpenSSF Scorecard](https://securityscorecards.dev/)
+- **File Checks**: Presence of important files (LICENSE, README, SECURITY.md, etc.)
+
+### Image Registry
+Container image information from Quay registry:
+- **Tags**: Available image versions
+- **Security Scans**: Image vulnerability reports
+- **Build History**: Image build timestamps and metadata
 
 ## Access the Application
 
