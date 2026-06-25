@@ -3,6 +3,7 @@ site_description: A simple demo web application showing pod information
 
 nav:
   - Home: index.md
+  - Scorecard Metrics: scorecard.md
 
 plugins:
   - techdocs-core
