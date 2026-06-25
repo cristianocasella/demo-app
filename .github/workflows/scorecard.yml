@@ -39,7 +39,7 @@ jobs:
           results_format: sarif
           # Publish results to OpenSSF REST API
           # Set to true to publish results (requires public repo)
-          publish_results: false
+          publish_results: true
 
       - name: Upload SARIF results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
